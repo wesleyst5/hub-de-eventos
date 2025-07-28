@@ -148,6 +148,20 @@ curl -X GET "http://localhost:5000/consume?topic=topic1&client_id=consumer_app_1
 -H "Authorization: Bearer <TOKEN>"
 ```
 
+### Enviar evento de consumo iniciando no offset especificado (com start_offset):
+
+```bash
+curl -X GET "http://localhost:5000/consume?topic=topic1&client_id=consumer_app_1&start_offset=0" \
+-H "Authorization: Bearer <TOKEN>"
+```
+
+### Enviar evento de consumo iniciando no start_time especificado (por timestamp):
+
+```bash
+curl -X GET "http://localhost:5000/consume?topic=topic1&client_id=consumer_app_1&start_time=2025-07-28T14:00:00Z" \
+-H "Authorization: Bearer <TOKEN>"
+```
+
 ## 🧾 Estrutura da Tabela `billing`
 
 ```sql
