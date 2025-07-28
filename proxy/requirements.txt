@@ -1,0 +1,4 @@
+flask
+pyjwt
+psycopg2-binary
+confluent-kafka
