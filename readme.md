@@ -118,6 +118,72 @@ python3 schema/register_schemas.py
 
 ---
 
+## 🧪 Testes com `curl`
+
+### Obter token:
+
+```bash
+curl -X POST http://localhost:5000/token \
+-H "Content-Type: application/json" \
+-d '{"user":"usuario_teste","tenant":"tenant1"}'
+```
+
+### Enviar evento de produção:
+
+```bash
+curl -X POST http://localhost:5000/produce \
+-H "Authorization: Bearer <TOKEN>" \
+-H "Content-Type: application/json" \
+-d '{
+  "topic": "topic1",
+  "client_id":"producer_app_1",
+  "message": {"key":"teste", "value": 123}
+}'
+```
+
+### Enviar evento de consumo:
+
+```bash
+curl -X GET "http://localhost:5000/consume?topic=topic1&client_id=consumer_app_1" \
+-H "Authorization: Bearer <TOKEN>"
+```
+
+## 🧾 Estrutura da Tabela `billing`
+
+```sql
+CREATE TABLE IF NOT EXISTS billing (
+    id SERIAL PRIMARY KEY,
+    tenant VARCHAR(255) NOT NULL,
+    topic VARCHAR(255) NOT NULL,
+    client_id VARCHAR(255) NOT NULL,
+    mensagens INTEGER NOT NULL,
+    bytes INTEGER NOT NULL,
+    action VARCHAR(20) NOT NULL,
+    event_time TIMESTAMP NOT NULL
+);
+```
+
+## 💡 Observações
+
+- O campo `client_id` permite registrar quem está produzindo ou consumindo as mensagens.
+- `action` define se foi uma operação de `produce` ou `consume`.
+
+## Sugestão de cálculo de custo
+- Custo por mensagem: R$ 0,005
+- Custo por byte: R$ 0,00001
+```bash
+SELECT
+  client_id,
+  SUM(mensagens) AS total_mensagens,
+  SUM(bytes) AS total_bytes,
+  SUM(mensagens)*0.005 AS custo_mensagens,
+  SUM(bytes)*0.00001 AS custo_bytes,
+  SUM(mensagens)*0.005 + SUM(bytes)*0.00001 AS custo_total
+FROM billing
+GROUP BY client_id
+ORDER BY client_id;
+```
+
 ## 📊 Monitoramento e Billing
 
 - O proxy expõe métricas no formato Prometheus.
@@ -154,18 +220,3 @@ Contribuições são bem-vindas! Abra issues ou pull requests para melhorias.
 
 **Desenvolvido para fornecer uma arquitetura escalável e segura para hub de eventos multi-tenant com Kafka e monitoramento completo.**
 
-## Sugestão de cálculo de custo
-   - Custo por mensagem: R$ 0,005
-   - Custo por byte: R$ 0,00001
-```bash
-SELECT
-  client_id,
-  SUM(mensagens) AS total_mensagens,
-  SUM(bytes) AS total_bytes,
-  SUM(mensagens)*0.005 AS custo_mensagens,
-  SUM(bytes)*0.00001 AS custo_bytes,
-  SUM(mensagens)*0.005 + SUM(bytes)*0.00001 AS custo_total
-FROM billing
-GROUP BY client_id
-ORDER BY client_id;
-```
