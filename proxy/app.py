@@ -45,7 +45,7 @@ def produce():
     data = request.json
     tenant = user.get("tenant")
     client_id = data.get("client_id")
-    topic = f"{tenant}.{data.get('topic')}"
+    topic = data.get('topic')
     message = data.get("message")
     if not topic or not message or not client_id:
         return jsonify({"error": "Missing topic, message or client_id"}), 400
@@ -75,7 +75,8 @@ def consume():
     if not topic or not client_id:
         return jsonify({"error": "Missing topic or client_id"}), 400
 
-    topic_full = f"{tenant}.{topic}"
+    #topic_full = f"{tenant}.{topic}"
+    topic_full = topic
 
     start_timestamp = None
     if start_time_str:
