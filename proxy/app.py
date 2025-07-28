@@ -54,7 +54,7 @@ def produce():
         kafka_client.produce(topic, message)
         message_json = json.dumps(message)
         message_bytes = len(message_json.encode('utf-8'))
-        billing.register_produce(tenant, topic, client_id, mensagens=1, bytes_=message_bytes)
+        billing.register_produce(tenant, client_id, topic, mensagens=1, bytes_=message_bytes)
         return jsonify({"status": "Message produced"})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
