@@ -132,7 +132,7 @@ def consume():
         total_messages = len(messages)
         total_bytes = sum(len(json.dumps(m).encode('utf-8')) for m in messages)
 
-        billing.register_consume(tenant, topic_full, client_id,
+        billing.register_consume(tenant, client_id, topic_full,
                                  mensagens=total_messages, bytes_=total_bytes)
 
         return jsonify({"messages": messages})
