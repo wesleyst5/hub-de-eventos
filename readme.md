@@ -159,13 +159,13 @@ Contribuições são bem-vindas! Abra issues ou pull requests para melhorias.
    - Custo por byte: R$ 0,00001
 ```bash
 SELECT
-  tenant,
+  client_id,
   SUM(mensagens) AS total_mensagens,
   SUM(bytes) AS total_bytes,
-  SUM(mensagens) * 0.005 AS custo_mensagens,
-  SUM(bytes) * 0.00001 AS custo_bytes,
-  SUM(mensagens) * 0.005 + SUM(bytes) * 0.00001 AS custo_total
+  SUM(mensagens)*0.005 AS custo_mensagens,
+  SUM(bytes)*0.00001 AS custo_bytes,
+  SUM(mensagens)*0.005 + SUM(bytes)*0.00001 AS custo_total
 FROM billing
-GROUP BY tenant
-ORDER BY tenant;
+GROUP BY client_id
+ORDER BY client_id;
 ```
