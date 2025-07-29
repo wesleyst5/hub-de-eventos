@@ -1,12 +1,12 @@
 # Event Hub Local - Arquitetura Kafka com Proxy, Schema Registry e Billing
 
-Este projeto simula localmente uma arquitetura moderna de Hub de Eventos baseada em Apache Kafka, com proxy autenticado, registro automático de schemas, controle de consumo (billing) e monitoramento via Prometheus e Grafana.
+Este projeto simula localmente uma arquitetura moderna de Hub de Eventos baseada em Apache Kafka, com proxy autenticado e controle de consumo (billing).
 
 ---
 
 ## 🚀 Visão Geral
 
-A solução permite múltiplos tenants produzirem e consumirem eventos em tópicos isolados, com controle de acesso via OAuth2/JWT, persistência dos dados e métricas em PostgreSQL, caching em Redis, além de dashboards customizados para monitoramento em tempo real.
+A solução permite múltiplos tenants produzirem e consumirem eventos em tópicos isolados, com controle de acesso via OAuth2/JWT, persistência dos dados e métricas em PostgreSQL.
 
 ---
 
@@ -16,12 +16,9 @@ A solução permite múltiplos tenants produzirem e consumirem eventos em tópic
 
 - Suporte a múltiplos tenants com tópicos dinâmicos e isolados por tenant.
 - Produção e consumo de eventos via proxy autenticado.
-- Registro automático de schemas com Confluent Schema Registry.
 - Autenticação e autorização via OAuth2/JWT no proxy.
-- Registro detalhado do consumo por tenant e tópico para billing.
+- Registro detalhado do consumo por tenant, client e tópico para billing.
 - Armazenamento persistente de logs e métricas em PostgreSQL.
-- Métricas em tempo real expostas para Prometheus.
-- Dashboards Grafana para visualização operacional.
 - Escalabilidade horizontal para múltiplos tenants e conexões simultâneas.
 
 ### 2. Requisitos Não Funcionais
@@ -29,19 +26,14 @@ A solução permite múltiplos tenants produzirem e consumirem eventos em tópic
 - Baixa latência e alta performance na comunicação proxy-Kafka.
 - Persistência e resiliência dos dados e métricas.
 - Segurança reforçada na autenticação e proteção dos dados.
-- Observabilidade completa via logs estruturados e dashboards.
 - Portabilidade via Docker Compose para fácil deploy local ou nuvem.
-- Automação de processos via scripts para schema registration e billing.
+- Automação de processos billing.
 
 ### 3. Requisitos Técnicos
 
 - Apache Kafka 7.5.0 e Zookeeper compatível.
-- Confluent Schema Registry para gerenciamento de schemas.
 - PostgreSQL 15 para persistência de métricas e billing.
-- Redis 7 para caching de métricas e controle rápido.
 - Proxy em Python (Flask/FastAPI) com integração Kafka e OAuth2.
-- Métricas no formato Prometheus (biblioteca prometheus-client).
-- Dashboards prontos para Grafana.
 - Scripts auxiliares para automação de tarefas.
 
 ### 4. Requisitos de Integração
@@ -49,18 +41,14 @@ A solução permite múltiplos tenants produzirem e consumirem eventos em tópic
 - Proxy integra com Kafka via confluent-kafka-python.
 - Proxy registra schemas via REST API do Schema Registry.
 - Proxy armazena logs e billing no PostgreSQL.
-- Proxy usa Redis para caching de métricas.
-- Prometheus coleta métricas do proxy.
-- Grafana consome dados do Prometheus para dashboards.
 - Suporte para múltiplos tenants com namespace isolado.
+- Identificação do client produtor e consumidor
 
 ### 5. Requisitos de Uso
 
 - Acesso ao proxy via tokens OAuth2/JWT válidos.
-- Produção e consumo com identificação clara do tenant.
-- Registro automático de schemas no envio da primeira mensagem.
+- Produção e consumo com identificação clara do tenant e client.
 - Billing gerado automaticamente a partir dos logs de consumo.
-- Monitoramento contínuo via Grafana e Prometheus.
 - Administração Kafka via Kafka UI (opcional).
 
 ---
