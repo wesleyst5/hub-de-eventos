@@ -1,4 +1,4 @@
-# Event Hub Local - Arquitetura Kafka com Proxy, Schema Registry e Billing
+# Event Hub Local - Arquitetura Kafka com Proxy e Billing
 
 Este projeto simula localmente uma arquitetura moderna de Hub de Eventos baseada em Apache Kafka, com proxy autenticado e controle de consumo (billing).
 
